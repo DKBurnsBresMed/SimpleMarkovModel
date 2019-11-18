@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r Setup, fig.height=3, fig.width=4, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+library("expm")
+
+# Function: calculates state population in cycle n, given initial probabilities P
+calc_cycle <- function(M, n, P) {
+  P %*% (M %^% n)
+}
+
+# function: calculates the state populations next cycle given survival in t1 and a matrix
+#   tip, use a list of TPs to apply this in parallel to capture time-varying TPs
+calc_next_cycle <- function(M, s_t1) {
+  s_t1 %*% M
+}
+
+smt0 <- c(1,0,0)
+
+tp <- t(matrix(
+  c(0.95, 0.025, 0.025,
+    0.025, 0.95, 0.025,
+    0, 0, 1),
+  ncol = 3,
+  nrow = 3
+))
+
+do.call(
+  'rbind',
+  lapply(1:1000,function(n) calc_cycle(tp,n,smt0))
+)
+
+
+
+
+```
+
+
+# A function to calculate a markov trace
+
+```{r Markov function}
+
+```
+
